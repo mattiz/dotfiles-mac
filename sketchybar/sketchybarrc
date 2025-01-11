@@ -85,6 +85,7 @@ source "$ITEM_DIR/front_app.sh"
 
 # Right items
 source "$ITEM_DIR/calendar.sh"
+source "$ITEM_DIR/battery.sh"
 
 sketchybar --hotload on
 
