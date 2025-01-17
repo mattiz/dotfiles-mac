@@ -12,8 +12,7 @@ after-login-command = []
 after-startup-command = [
     # JankyBorders has a built-in detection of already running process,
     # so it won't be run twice on AeroSpace restart
-    'exec-and-forget /opt/homebrew/opt/sketchybar/bin/sketchybar',
-    # 'exec-and-forget /opt/homebrew/opt/borders/bin/borders active_color="glow(0xd943ff64)" inactive_color=0x20494d64 width=8.0'
+    'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=8.0'
 ]
 
 # Notify Sketchybar about workspace change
@@ -22,9 +21,6 @@ exec-on-workspace-change = [
     '-c',
     '/opt/homebrew/opt/sketchybar/bin/sketchybar --trigger aerospace_workspace_change AEROSPACE_FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE AEROSPACE_PREV_WORKSPACE=$AEROSPACE_PREV_WORKSPACE',
 ]
-#exec-on-workspace-change = ['/bin/bash', '-c',
-#    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
-#]
 
 # Start AeroSpace at login
 start-at-login = true
@@ -36,7 +32,7 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 # See: https://nikitabobko.github.io/AeroSpace/guide#layouts
 # The 'accordion-padding' specifies the size of accordion padding
 # You can set 0 to disable the padding feature
-accordion-padding = 30
+accordion-padding = 40
 
 # Possible values: tiles|accordion
 default-root-container-layout = 'tiles'
@@ -111,6 +107,7 @@ outer.right =      4
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
 ctrl-comma = 'layout tiles horizontal vertical'
 ctrl-period = 'layout accordion horizontal vertical'
+ctrl-slash = 'layout floating tiling'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#focus
 ctrl-h = 'focus left'
@@ -223,5 +220,29 @@ up = 'volume up'
 shift-down = ['volume set 0', 'mode main']
 
 [[on-window-detected]]
+if.app-id = 'com.apple.finder'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'com.google.Chrome'
+run = ['move-node-to-workspace 1']
+
+[[on-window-detected]]
 if.app-id = 'com.tinyspeck.slackmacgap'
-run = ['move-node-to-workspace 8']
+run = ['move-node-to-workspace 2']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'The Lounge'
+run = ['move-node-to-workspace 2']
+
+[[on-window-detected]]
+if.app-id = 'com.jetbrains.datagrip'
+run = ['move-node-to-workspace 3']
+
+[[on-window-detected]]
+if.app-id = 'com.jetbrains.intellij'
+run = ['move-node-to-workspace 3']
+
+[[on-window-detected]]
+if.app-id = 'com.mitchellh.ghostty'
+run = ['move-node-to-workspace 4']
