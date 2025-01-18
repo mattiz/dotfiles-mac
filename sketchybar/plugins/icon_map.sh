@@ -3,6 +3,12 @@
 ### START-OF-ICON-MAP
 function __icon_map() {
     case "$1" in
+   "The Lounge")
+        icon_result=":wechat:"
+        ;;
+   "Ghostty")
+        icon_result=":ghostty:"
+        ;;
    "Live")
         icon_result=":ableton:"
         ;;
