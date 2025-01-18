@@ -27,6 +27,10 @@ defaults write com.apple.spaces spans-displays -bool true && killall SystemUISer
 # Turn off Dock delay
 defaults write com.apple.dock autohide-delay -float 0; defaults write com.apple.dock autohide-time-modifier -int 0;killall Dock
 
+# Turn off "Click wallpaper to reveal desktop"
+defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
+
+
 # Remap Home and End keys
 mkdir -p $HOME/Library/KeyBindings
 echo '{
