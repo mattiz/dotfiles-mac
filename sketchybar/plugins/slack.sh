@@ -4,8 +4,9 @@ SLACK_INFO=$(lsappinfo info -only StatusLabel `lsappinfo find LSDisplayName=Slac
 COUNT=${SLACK_INFO:25:1}
 
 #echo $SLACK_INFO >> ~/.debug
+#echo $COUNT >> ~/.debug
 
-if [ $COUNT = "•" ]; then
+if [ "$COUNT" = "•" ] || [ "$COUNT" = "\"" ]; then
   DRAWING=off
 else
   DRAWING=on
