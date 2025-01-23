@@ -8,4 +8,4 @@ quick-terminal-position = top
 quick-terminal-animation-duration = 0
 
 # Keybinds
-keybind = global:ctrl+enter=toggle_quick_terminal
+keybind = global:ctrl+enter=new_window
