@@ -120,10 +120,10 @@ ctrl-up    = 'focus up'
 ctrl-right = 'focus right'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move
-ctrl-shift-h = 'move left'
-ctrl-shift-j = 'move down'
-ctrl-shift-k = 'move up'
-ctrl-shift-l = 'move right'
+ctrl-shift-left = 'move left'
+ctrl-shift-down = 'move down'
+ctrl-shift-up = 'move up'
+ctrl-shift-right = 'move right'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#resize
 ctrl-shift-minus = 'resize smart -50'
@@ -188,17 +188,17 @@ run = ['layout floating']
 if.app-id = 'com.google.Chrome'
 run = ['move-node-to-workspace 1']
 
-[[on-window-detected]]
-if.app-id = 'com.tinyspeck.slackmacgap'
-run = ['move-node-to-workspace 2']
+#[[on-window-detected]]
+#if.app-id = 'com.tinyspeck.slackmacgap'
+#run = ['move-node-to-workspace 2']
 
 [[on-window-detected]]
 if.app-name-regex-substring = 'The Lounge'
 run = ['move-node-to-workspace 2']
 
-[[on-window-detected]]
-if.app-id = 'com.jetbrains.intellij'
-run = ['move-node-to-workspace 3']
+#[[on-window-detected]]
+#if.app-id = 'com.jetbrains.intellij'
+#run = ['move-node-to-workspace 3']
 
 [[on-window-detected]]
 if.app-id = 'com.jetbrains.datagrip'
