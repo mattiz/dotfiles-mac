@@ -14,16 +14,20 @@ WORKSPACES="/tmp/sketchybar_workspaces"
 source "$CONFIG_DIR/plugins/icon_map.sh" "" > /dev/null
 
 # Cached: this only changes with aerospace.toml, and every aerospace request
-# costs ~15ms of server CPU regardless of what it asks for.
-if [ -f "$WORKSPACES" ]; then
+# costs ~15ms of server CPU regardless of what it asks for. -s rather than -f:
+# an empty file means a previous run cached a failed lookup, so try again.
+if [ -s "$WORKSPACES" ]; then
   workspaces=$(< "$WORKSPACES")
 else
   workspaces=$(aerospace list-workspaces --all | tr '\n' ' ')
+  # At login sketchybar can beat AeroSpace to the start. Bail rather than cache
+  # an empty answer or blank the bar; the next event or poll retries.
+  [ -z "${workspaces// /}" ] && exit 0
   printf '%s' "$workspaces" > "$WORKSPACES"
 fi
 
 # All windows in one call: "<workspace>|<app name>" per line
-windows=$(aerospace list-windows --all --format '%{workspace}|%{app-name}')
+windows=$(aerospace list-windows --all --format '%{workspace}|%{app-name}') || exit 0
 
 # Icons are mapped in-process; one awk then groups them per workspace and emits
 # the sketchybar arguments, since bash 3.2 has no associative arrays.
