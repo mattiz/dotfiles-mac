@@ -55,10 +55,11 @@ sketchybar --add item space_creator left               \
            --subscribe space_creator aerospace_workspace_change aerospace_window_move
 
 
-# Hidden item keeping the icon strips current. aerospace_windows_change (from
-# AeroSpace's on-focus-changed) covers opening and closing windows; the poll
-# catches the rest, at ~17ms of AeroSpace CPU a time. updates=on is required:
-# the default when_shown never updates an item with drawing=off.
+# Hidden item keeping the icon strips current. Opening a window shows up as
+# aerospace_windows_change (AeroSpace's on-focus-changed); closing one fires no
+# AeroSpace callback at all, so space_windows_change covers that side. The poll
+# is a safety net at ~17ms of AeroSpace CPU a time. updates=on is required: the
+# default when_shown never updates an item with drawing=off.
 window_watcher=(
   drawing=off
   updates=on
@@ -68,7 +69,7 @@ window_watcher=(
 
 sketchybar --add item window_watcher left \
            --set window_watcher "${window_watcher[@]}" \
-           --subscribe window_watcher aerospace_windows_change
+           --subscribe window_watcher aerospace_windows_change space_windows_change
 
 # Initial paint; --force drops caches left by a previous run
 "$PLUGIN_DIR/update_windows.sh" --force
