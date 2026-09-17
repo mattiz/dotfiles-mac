@@ -2,6 +2,7 @@
 
 sketchybar --add event aerospace_workspace_change
 sketchybar --add event aerospace_window_move
+sketchybar --add event aerospace_windows_change
 
 for m in $(aerospace list-monitors | awk '{print $1}'); do
   for i in $(aerospace list-workspaces --monitor $m); do
@@ -29,19 +30,6 @@ for m in $(aerospace list-monitors | awk '{print $1}'); do
                --set space.$sid "${space[@]}" \
                --subscribe space.$sid mouse.clicked
 
-    apps=$(aerospace list-windows --workspace $sid | awk -F'|' '{gsub(/^ *| *$/, "", $2); print $2}')
-
-    icon_strip=" "
-    if [ "${apps}" != "" ]; then
-      while read -r app
-      do
-        icon_strip+=" $($CONFIG_DIR/plugins/icon_map.sh "$app")"
-      done <<< "${apps}"
-    else
-      icon_strip=" —"
-    fi
-
-    sketchybar --set space.$sid label="$icon_strip"
   done
 
   for i in $(aerospace list-workspaces --monitor $m --empty); do
@@ -65,3 +53,22 @@ space_creator=(
 sketchybar --add item space_creator left               \
            --set space_creator "${space_creator[@]}"   \
            --subscribe space_creator aerospace_workspace_change aerospace_window_move
+
+
+# Hidden item keeping the icon strips current. aerospace_windows_change (from
+# AeroSpace's on-focus-changed) covers opening and closing windows; the poll
+# catches the rest, at ~17ms of AeroSpace CPU a time. updates=on is required:
+# the default when_shown never updates an item with drawing=off.
+window_watcher=(
+  drawing=off
+  updates=on
+  update_freq=2
+  script="$PLUGIN_DIR/update_windows.sh"
+)
+
+sketchybar --add item window_watcher left \
+           --set window_watcher "${window_watcher[@]}" \
+           --subscribe window_watcher aerospace_windows_change
+
+# Initial paint; --force drops caches left by a previous run
+"$PLUGIN_DIR/update_windows.sh" --force

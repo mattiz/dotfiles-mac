@@ -8,30 +8,12 @@ AEROSPACE_FOCUSED_MONITOR=$(aerospace list-monitors --focused | awk '{print $1}'
 AEROSPACE_WORKSPACE_FOCUSED_MONITOR=$(aerospace list-workspaces --monitor focused --empty no)
 AEROSPACE_EMPTY_WORKESPACE=$(aerospace list-workspaces --monitor focused --empty)
 
-reload_workspace_icon() {
-  apps=$(aerospace list-windows --workspace "$@" | awk -F'|' '{gsub(/^ *| *$/, "", $2); print $2}')
-
-  icon_strip=" "
-  if [ "${apps}" != "" ]; then
-    while read -r app
-    do
-      icon_strip+=" $($CONFIG_DIR/plugins/icon_map.sh "$app")"
-    done <<< "${apps}"
-  else
-    icon_strip=" —"
-  fi
-
-  sketchybar --animate sin 10 --set space.$@ label="$icon_strip"
-}
-
-
 if [ "$SENDER" = "aerospace_window_move" ]; then
   CURRENTLY_FOCUSED_WORKSPACE=$(aerospace list-workspaces --focused)
 
   echo "reload: FROM: $CURRENTLY_FOCUSED_WORKSPACE, TO: $AEROSPACE_RECEIVER_WORKSPACE" >> ~/.debug
   
-  reload_workspace_icon "$AEROSPACE_RECEIVER_WORKSPACE"
-  reload_workspace_icon "$CURRENTLY_FOCUSED_WORKSPACE"
+  "$CONFIG_DIR/plugins/update_windows.sh"
 
    for i in $AEROSPACE_WORKSPACE_FOCUSED_MONITOR; do
     sketchybar --set space.$i display=$AEROSPACE_FOCUSED_MONITOR
@@ -41,8 +23,7 @@ fi
 if [ "$SENDER" = "aerospace_workspace_change" ]; then
   echo "change: $AEROSPACE_FOCUSED_WORKSPACE" >> ~/.debug
 
-  reload_workspace_icon "$AEROSPACE_PREV_WORKSPACE"
-  reload_workspace_icon "$AEROSPACE_FOCUSED_WORKSPACE"
+  "$CONFIG_DIR/plugins/update_windows.sh"
 
   # current workspace space border color
   sketchybar --set space.$AEROSPACE_FOCUSED_WORKSPACE icon.highlight=true \
