@@ -104,11 +104,8 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 alias ls="eza -aghl --git --group-directories-first -F"
-alias dc="docker-compose"
+alias dc="docker compose"
 alias k="kubectl"
-alias connect-cleos-db="$HOME/projects/entur/az-sql-connect/connect.sh cleos-nod-integration psql-cleos-db-dev.postgres.database.azure.com 2847"
-
-export PATH="$PATH:$HOME/projects/entur/cleos-commons/bin"
 
 # Cache the output of slow `<tool> completion` calls under ~/.cache/zsh and
 # regenerate only when the binary itself is newer than the cache file.
